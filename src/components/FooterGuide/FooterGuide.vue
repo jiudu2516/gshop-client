@@ -1,32 +1,31 @@
 <template>
-  <div>
-    <footer class="footer_guide">
-      <div class="guide_item" @click="goto('/msite')" :class="{on: $route.path === '/msite'}">
-        <span>
-          <i class="iconfont icon-waimai"></i>
-        </span>
-        <span>外卖</span>
-      </div>
-      <div class="guide_item"  @click="goto('/search')" :class="{on: $route.path === '/search'}">
-        <span>
-          <i class="iconfont icon-search4"></i>
-        </span>
-        <span>搜索</span>
-      </div>
-      <div class="guide_item"  @click="goto('/order')" :class="{on: $route.path === '/order'}">
-        <span>
-          <i class="iconfont icon-dingdan1"></i>
-        </span>
-        <span>订单</span>
-      </div>
-      <div class="guide_item"  @click="goto('/profile')" :class="{on: $route.path === '/profile'}">
-        <span>
-          <i class="iconfont icon-wode"></i>
-        </span>
-        <span>我的</span>
-      </div>
-    </footer>
-  </div>
+  <footer class="footer_guide">
+    <div class="guide_item" @click="goto('/msite')" :class="{on: $route.path === '/msite'}">
+      <span>
+        <i class="iconfont icon-waimai"></i>
+      </span>
+      <span>外卖</span>
+    </div>
+    <div class="guide_item"  @click="goto('/search')" :class="{on: $route.path === '/search'}">
+      <span>
+        <i class="iconfont icon-search4"></i>
+      </span>
+      <span>搜索</span>
+    </div>
+    <div class="guide_item"  @click="goto('/order')" :class="{on: $route.path === '/order'}">
+      <span>
+        <i class="iconfont icon-dingdan1"></i>
+      </span>
+      <span>订单</span>
+    </div>
+    <div class="guide_item"  @click="goto('/profile')" :class="{on: $route.path === '/profile'}">
+      <span>
+        <i class="iconfont icon-wode"></i>
+      </span>
+      <span>我的</span>
+    </div>
+  </footer>
+
 </template>
 
 <script type="text/ecmascript-6">
