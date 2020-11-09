@@ -9,6 +9,7 @@
  import Search from '../pages/Search/Search.vue'
  import Order from '../pages/Order/Order.vue'
  import Profile from '../pages/Profile/Profile.vue'
+ import Login from '../pages/Login/Login.vue'
 
  // 声明使用vue插件vue-router
  Vue.use(VueRouter)
@@ -24,19 +25,35 @@
      },
      {
        path: '/msite', // path最左边的/代表项目根路径
-       component: MSite
+       component: MSite,
+       meta: { 
+         isShowFooter: true
+       }
      },
      {
        path: '/search',
-       component: Search
+       component: Search,
+       meta: { 
+         isShowFooter: true
+       }
      },
      {
        path: '/order',
-       component: Order
+       component: Order,
+       meta: { 
+         isShowFooter: true
+       }
      },
      {
        path: '/profile',
-       component: Profile
+       component: Profile,
+       meta: { 
+         isShowFooter: true
+       }
+     },
+     {
+       path: '/login',
+       component: Login
      }
    ]
  })

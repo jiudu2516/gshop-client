@@ -309,7 +309,21 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import Swiper from 'swiper'
+  import 'swiper/css/swiper.css'
+       
   export default {
+    mounted () {
+      // swiper对象必须要在列表数据显示之后创建
+      new Swiper ('.swiper-container', {
+        loop: true, // 循环模式选项
+        
+        // 如果需要分页器
+        pagination: {
+          el: '.swiper-pagination',
+        }
+      }) 
+    }
   }
 </script>
 

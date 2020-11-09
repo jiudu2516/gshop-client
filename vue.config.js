@@ -40,15 +40,9 @@ module.exports = { //  只能写vue封装的配置
         pathRewrite: {
           '^/api': '' // 转发请求时去除路径前面的/api
         },
+        changeOrigin: true, // 支持跨域, 如果协议/主机也不相同, 必须加上
       },
 
-      '/gh': {
-        target: 'https://api.github.com', // 转发的目标地址
-        pathRewrite: {
-          '^/gh': '' // 转发请求时去除路径前面的/api
-        },
-        changeOrigin: true, // 支持跨域, 如果协议/主机也不相同, 必须加上
-      }
     }
   }
 }

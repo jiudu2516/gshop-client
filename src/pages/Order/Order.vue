@@ -1,8 +1,6 @@
 <template>
   <section class="order">
-    <Header title="订 单">
-
-    </Header>
+    <Header title="订 单"/>
     <section class="order_no_login">
       <img src="./images/order/person.png">
       <h3>登录后查看外卖订单</h3>
