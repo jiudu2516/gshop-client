@@ -8,7 +8,7 @@ import ajax from './ajax'
 export const reqAddress = (longitude, latitude) => ajax(`/position/${latitude},${longitude}`)
 
 // 2、获取食品分类列表
-export const reqFoodsCategorys = () => ajax('/index_category')
+export const reqCategorys = () => ajax('/index_category')
 
 // 3、根据经纬度获取商铺列表
 export const reqShops = ({longitude, latitude}) => ajax('/shops', {params: {longitude, latitude}})

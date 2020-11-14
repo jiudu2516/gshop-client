@@ -34,13 +34,32 @@
 
     methods: {
       // 编程式路由跳转
-      goto(path) {
-        this.$router.replace(path)
+      goto(path) { 
+        // 跳转至指定的路由路径
+        /*   编程式导航： $router
+         $route 和 $router 的区别
+           1 、 $router  是路由器对象，里边包含路由跳转的方法
+           2 、 $route  是路由对象，里边包含当前路径下所有路由信息（path、 params、 meta、 query）
+
+        */
+      //  解决重复点击当前路由报错
+      //  方案一：点击当前页，没有任何效果
+        // if (path !== this.$route.path) {
+        //   this.$router.replace(path)
+        // }
+
+        // path !== this.$route.path && this.$router.replace(path)
+
+        // 方案二：点击当前页，刷新界面
+        if (path!==this.$route.path) {
+          // 编程是路由跳转
+          this.$router.replace(path)
+        } else {
+          window.location = path    //  发送一般的http请求   ==>  整个界面会刷新显示
+        }
+      
       },
-      // isCurrent(path) {
-      //   console.log(this.$route.path)
-      //   return this.$route.path === path
-      // }
+
     }
   }
 </script>

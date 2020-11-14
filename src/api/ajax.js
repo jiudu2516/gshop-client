@@ -10,39 +10,46 @@
 import axios from 'axios'
 import qs from 'qs'
 
+// 1 生成Axios的伪实例，instance不是真正的new Axios，但是拥有Axios实例的所有属性和方法
 const instance = axios.create({
-  baseURL: 'http://localhost:4000',
-  // 4. 配置请求超时的时间
+  // baseURL: 'http://localhost:4000',   //  会出现跨域问题
+  baseURL: '/api',
+  // 4）. 配置请求超时的时间
   timeout: 20000
 })
 
-// 添加请求拦截器
+// 2 添加请求拦截器，理解：即将要发送请求的时候，将请求拦截下来，对当前的请求批量处理，如：添加token，修改请求的参数
 instance.interceptors.request.use((config) => {
+  // 2.1 config包含当前请求的所有请求信息：method，url，data
+
+  // 2.2  修改post请求的请求参数格式：默认的参数格式是json对象格式{a：xxx, b: yyy}，当前服务器能处理的是url-encoding，如：a=xxx&b=yyy
   console.log('req interceptor')
-  // 3. 对请求体参数进行ulencode处理, 而不使用默认的jso
+  // 3）. 对请求体参数进行ulencode处理, 而不使用默认的json
   const data = config.data
   if (data instanceof Object) {
-    config.data = qs.stringify(data)
+    config.data = qs.stringify(data)   // json对象格式 --> url-encoding形式
   }
   
   return config
 })
 
 // 添加响应拦截器
-instance.interceptors.response.use((config) => {
+instance.interceptors.response.use(
   response => {
     console.log('res interceptor')
 
     // return response
-    // 2. 异步请求成功的数据不是response, 而是response.da
+    // 2）. 异步请求成功的数据不是response, 而是response.da
     return response.data
   },
   error => {
     // return Promise.reject(error)
-    // 1. 统一处理请求异常
+    // 1）. 统一处理请求异常
     alert('请求出错：'  + error.message)
+    // 默认会返回一个成功的promise实例，但没有数据
+    // 手动返回一个状态为初始化的promise
     return new Promise(() => {})   //  返回一个pending状态
   }
-})
+)
 
 export default instance

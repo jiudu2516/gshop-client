@@ -1,7 +1,7 @@
 <template>
   <section class="msite">
     <!--首页头部-->
-    <Header title="定位">
+    <Header title="XXX">
       <span class="header_search" slot="left">
         <i class="iconfont icon-search"></i>
       </span>
