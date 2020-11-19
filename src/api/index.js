@@ -12,3 +12,6 @@ export const reqCategorys = () => ajax('/index_category')
 
 // 3、根据经纬度获取商铺列表
 export const reqShops = ({longitude, latitude}) => ajax('/shops', {params: {longitude, latitude}})
+
+// 4、发送短信验证码
+export const reqSendCode = (phone) => ajax('/sendcode', {params: phone})

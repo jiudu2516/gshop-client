@@ -4,44 +4,52 @@
       <div class="login_header">
         <h2 class="login_logo">硅谷外卖</h2>
         <div class="login_header_title">
-          <a href="javascript:;" class="on">短信登录</a>
-          <a href="javascript:;">密码登录</a>
+          <a href="javascript:;" :class="{on: isShowSms}" @click="isShowSms=true">短信登录</a>
+          <a href="javascript:;" :class="{on: !isShowSms}" @click="isShowSms=false">密码登录</a>
         </div>
       </div>
       <div class="login_content">
         <form>
-          <div class="on">
+          <div :class="{on: isShowSms}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号">
-              <button disabled="disabled" class="get_verification">获取验证码</button>
+              <input name="phone" v-model="phone" v-validate="'required|phone'" type="tel" maxlength="11" placeholder="手机号">
+              <span style="color: red;" v-show="errors.has('phone')">{{ errors.first('phone') }}</span>
+              <button :disabled="!isRightPhone || countDownTime > 0" 
+                      class="get_verification"
+                      :class="{right_phone_number: isRightPhone}" 
+                      @click.prevent="getCode">{{countDownTime > 0 ? `${countDownTime}s重新获取验证码` : '获取验证码'}}</button>
             </section>
             <section class="login_verification">
-              <input type="tel" maxlength="8" placeholder="验证码">
+              <input name="code" v-model="code" v-validate="'required|code'" type="tel" maxlength="8" placeholder="验证码">
+              <span style="color: red;" v-show="errors.has('code')">{{ errors.first('code') }}</span>
             </section>
             <section class="login_hint">
               温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
               <a href="javascript:;">《用户服务协议》</a>
             </section>
           </div>
-          <div>
+          <div :class="{on: !isShowSms}">
             <section>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                <input name="username" v-model="username" v-validate="'required'" type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                <span style="color: red;" v-show="errors.has('username')">{{ errors.first('username') }}</span>
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码">
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input name="password" v-model="password" v-validate="'required'" :type="isShowPwd ? 'text' : 'password'" maxlength="8" placeholder="密码">
+                <span style="color: red;" v-show="errors.has('password')">{{ errors.first('password') }}</span>
+                <div class="switch_button" :class="isShowPwd ? 'on' : 'off'" @click="isShowPwd = !isShowPwd">
+                  <div class="switch_circle" :class="{right: isShowPwd}"></div>
+                  <span class="switch_text">{{isShowPwd ? 'abc' : ''}}</span>
                 </div>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码">
+                <input name="captcha" v-model="captcha" v-validate="'required'" type="text" maxlength="11" placeholder="验证码">
+                <span style="color: red;" v-show="errors.has('captcha')">{{ errors.first('captcha') }}</span>
                 <img class="get_verification" src="./images/captcha.svg" alt="captcha">
               </section>
             </section>
           </div>
-          <button class="login_submit">登录</button>
+          <button class="login_submit" @click.prevent="login">登录</button>
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
@@ -53,7 +61,72 @@
 </template>
 
 <script type="text/ecmascript-6">
+  // import { reqSendCode } from '../../api'
+
   export default {
+    name: 'login',
+    data () {
+      return {
+        isShowSms: true,  // true：显示短信登录界面   false：显示密码登录界面 
+        phone: '', // 手机号
+        code: '',  // 短信验证码
+        username: '', // 用户名
+        password: '', // 密码
+        captcha: '', // 图形验证码
+        countDownTime: 0, // 倒计时
+        isShowPwd: false,  // 密码默认是false 不可见
+      }
+    },
+
+    computed: {
+      isRightPhone () {
+        // 验证是不是一个正确的手机号  
+        return /^1(3|4|5|6|7|8|9)\d{9}$/.test(this.phone)
+      }
+    },
+
+    methods: {
+      async getCode () {
+        // 进行倒计时时间显示效果
+        this.countDownTime = 5
+        // 开启倒计时
+        let intervalId = setInterval(() => {
+          this.countDownTime--
+          this.countDownTime === 0 && clearInterval(intervalId)  // 关闭定时器
+        }, 1000)
+
+        // 发送请求请求后台给手机发送验证码
+        let result = await this.$API.reqSendCode({phone: this.phone})
+        // console.log(result)
+        if (result.code === 0) {
+          alert('验证码已发送')
+        } else {
+          alert(result.msg)
+        }
+      },
+
+      // 表单登录验证
+      async login () {
+        // 1 前端验证
+        let names
+        if (this.isShowSms) {
+          names = ['phone', 'code']
+        } else {
+          names = ['username', 'password', 'captcha']
+        }
+        const success = await this.$validator.validateAll(names)  // 对指定的所有表单项进行验证
+        // console.log(success)
+        if (success) {
+          // 前端验证成功
+
+        } else {
+          // 前端验证失败
+          alert('前端验证失败')
+        }
+        
+        // 2 后端验证
+      }
+    }
   }
 </script>
 
@@ -118,6 +191,8 @@
                 color #ccc
                 font-size 14px
                 background transparent
+                &.right_phone_number
+                  color black
             .login_verification
               position relative
               margin-top 16px
@@ -157,6 +232,8 @@
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                   transition transform .3s
+                  &.right
+                    transform translateX(27px)
             .login_hint
               margin-top 12px
               color #999

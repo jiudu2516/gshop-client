@@ -1,12 +1,20 @@
 import Vue from 'vue'
 import 'lib-flexible'
+import './veeValidate'
+
+import * as API from './api'
+
 import router from './router'
 import store from './vuex/store'
 import App from '@/App.vue'
 import Header from '@/components/Header/Header.vue'
+import Stars from '@/components/Stars/Stars.vue'
+
+Vue.prototype.$API = API
 
 // 注册全局组件
 Vue.component('Header', Header)
+Vue.component('Stars', Stars)
 
 Vue.config.productionTip = false
 
