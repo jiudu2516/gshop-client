@@ -10,11 +10,13 @@ import {
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
-  RECEIVE_SHOPS
+  RECEIVE_SHOPS,
+  RECEIVE_USER,
+  RECEIVE_TOKEN
 } from './mutation-types'
 
 export default {
-  // 获取当前地址信息对象的异步action
+  // 1 获取当前地址信息对象的异步action
   async getAddress ({commit, state}) {
     const {longitude, latitude} = state
     // 发异步请求
@@ -25,7 +27,7 @@ export default {
       commit(RECEIVE_ADDRESS, address)
     }
   },
-  // 获取商品分类的异步action
+  // 2 获取商品分类的异步action
   async getCategorys ({commit}) {
   // async getCategorys ({commit}, callback) {
     // 发异步请求
@@ -38,7 +40,7 @@ export default {
       // typeof callback === 'funct vcon' && callback()
     }
   },
-  // 获取商家数组的异步action
+  // 3 获取商家数组的异步action
   async getShops ({commit, state}) {
     const {longtitude, latitude} = state
     // 发异步请求
@@ -48,5 +50,15 @@ export default {
       const shops = result.data
       commit(RECEIVE_SHOPS, shops)
     }
-  }
+  },
+  // 保存用户信息的异步action
+  saveUser ({commit}, user) {
+    const token = user.token
+    commit(RECEIVE_TOKEN, {token}) // 将token保存到state
+    // 将token存入本地localStorage  (七天内免登录)
+    localStorage.setItem('token_key', token)
+    delete user.token // 删除user内部的token
+    commit(RECEIVE_USER, {user}) // 将user保存到state
+    // console.log(user)
+  },
 }

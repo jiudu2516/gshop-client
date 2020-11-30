@@ -14,4 +14,19 @@ export const reqCategorys = () => ajax('/index_category')
 export const reqShops = ({longitude, latitude}) => ajax('/shops', {params: {longitude, latitude}})
 
 // 4、发送短信验证码
-export const reqSendCode = (phone) => ajax('/sendcode', {params: phone})
+export const reqSendCode = ({phone}) => ajax('/sendcode', {params: {phone}})
+
+// 5、用户名密码登陆
+// export const reqLoginPwd = ({username, password, captcha}) => ajax.post('/login_pwd',  {name:username, pwd:password, captcha})
+export const reqLoginPwd = ({username, password, captcha}) => ajax({
+  url: '/login_pwd',
+  method: 'POST',
+  data: {
+    name: username,
+    pwd: password,
+    captcha
+  }
+})
+
+// 6、手机号验证码登陆
+export const reqLoginSms = ({phone, code}) => ajax.post('/login_sms', {phone, code})

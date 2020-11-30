@@ -45,7 +45,7 @@
               <section class="login_message">
                 <input name="captcha" v-model="captcha" v-validate="'required'" type="text" maxlength="11" placeholder="验证码">
                 <span style="color: red;" v-show="errors.has('captcha')">{{ errors.first('captcha') }}</span>
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                <img class="get_verification" :src="`http://localhost:4000/captcha`" ref="captcha" @click="updateCaptcha" alt="captcha">
               </section>
             </section>
           </div>
@@ -53,7 +53,7 @@
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
-      <a href="javascript:" class="go_back">
+      <a href="javascript:" class="go_back" @click="$router.push('./profile')">
         <i class="iconfont icon-fanhui3"></i>
       </a>
     </div>
@@ -61,13 +61,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import { reqSendCode } from '../../api'
 
   export default {
     name: 'login',
     data () {
       return {
-        isShowSms: true,  // true：显示短信登录界面   false：显示密码登录界面 
+        isShowSms: false,  // true：显示短信登录界面   false：显示密码登录界面 
         phone: '', // 手机号
         code: '',  // 短信验证码
         username: '', // 用户名
@@ -116,15 +115,60 @@
         }
         const success = await this.$validator.validateAll(names)  // 对指定的所有表单项进行验证
         // console.log(success)
+
+        let result
         if (success) {
           // 前端验证成功
+          const {isShowSms, phone, code, username, password, captcha} = this
+         
+         // 2 后端验证
+          //  1）收集表单项的数据
+          // 2) 发送请求  
+          // 判断用户登录方式
+          if (isShowSms) {
+            // 短信登录
+            result = await this.$API.reqLoginSms({phone, code})
+            if (result.code === 1) {
+              // 登陆失败
+              alert("验证码错误")
+              this.code = ''
+            }
+          } else {
+            // 用户名密码登录
+            result = await this.$API.reqLoginPwd({username, password, captcha})
+            if (result.code === 1) {
+              // 登陆失败
+              alert("用户名/密码/验证码错误")
+              this.updateCaptcha()
+              this.captcha = ''
+            }
+          }
+
+          // 统一处理登陆成功
+          if (result.code === 0) {
+            // 登陆成功，跳转到profile
+            alert('登陆成功')
+
+            // 将user保存到vuex的state中
+            const user = result.data
+            // console.log(user)
+            this.$store.dispatch('saveUser', user)
+
+            this.$router.push({path: '/profile'})
+          }/*  else {
+            alert('result.msg')
+          } */
 
         } else {
           // 前端验证失败
           alert('前端验证失败')
         }
-        
-        // 2 后端验证
+      
+      },
+
+      // 切换一次性图片验证码
+      async updateCaptcha () {
+        this.$refs.captcha.src = 'http://localhost:4000/captcha?time' + Date.now()
       }
     }
   }

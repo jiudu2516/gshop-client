@@ -10,6 +10,7 @@ import App from '@/App.vue'
 import Header from '@/components/Header/Header.vue'
 import Stars from '@/components/Stars/Stars.vue'
 
+// 将API对象挂载到Vue的原型对象上
 Vue.prototype.$API = API
 
 // 注册全局组件

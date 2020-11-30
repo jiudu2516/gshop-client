@@ -36,6 +36,21 @@ instance.interceptors.request.use((config) => {
   if (data instanceof Object) {
     config.data = qs.stringify(data)   // json对象格式 --> url-encoding形式
   }
+
+  /* 2.3 携带token的方式
+        1  cookie
+        2  请求参数
+        3  请求头[authorization] 
+  */
+  let token = localStorage.getItem('token_key')
+  // 判断当前的请求是否需要携带token  用户名密码首次登录时
+  // if (config.headers.needToken) {
+    if (token) {
+      config.headers.authorization = token
+    } else {
+      // throw Error ('请先登录！')
+    }
+  // }
   
   return config
 })
