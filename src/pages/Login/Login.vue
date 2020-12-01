@@ -151,7 +151,7 @@
 
             // 将user保存到vuex的state中
             const user = result.data
-            // console.log(user)
+            console.log(user)
             this.$store.dispatch('saveUser', user)
 
             this.$router.push({path: '/profile'})

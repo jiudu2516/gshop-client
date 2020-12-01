@@ -25,8 +25,19 @@ export const reqLoginPwd = ({username, password, captcha}) => ajax({
     name: username,
     pwd: password,
     captcha
+  },
+  headers: {
+    needToken: false
   }
 })
 
 // 6、手机号验证码登陆
 export const reqLoginSms = ({phone, code}) => ajax.post('/login_sms', {phone, code})
+
+// 7、自动登录
+export const reqAutoLogin = () => ajax.get('/auto_login', 
+  {
+    headers: {
+    needToken: true
+  }
+})

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import 'lib-flexible'
 import './veeValidate'
+import {Button} from 'mint-ui'
 
 import * as API from './api'
 
@@ -16,6 +17,7 @@ Vue.prototype.$API = API
 // 注册全局组件
 Vue.component('Header', Header)
 Vue.component('Stars', Stars)
+Vue.component(Button.name, Button)
 
 Vue.config.productionTip = false
 

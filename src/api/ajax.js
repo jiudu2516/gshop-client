@@ -11,6 +11,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import { Indicator } from 'mint-ui'
+import router from '@/router'
 
 // 1 生成Axios的伪实例，instance不是真正的new Axios，但是拥有Axios实例的所有属性和方法
 const instance = axios.create({
@@ -44,13 +45,13 @@ instance.interceptors.request.use((config) => {
   */
   let token = localStorage.getItem('token_key')
   // 判断当前的请求是否需要携带token  用户名密码首次登录时
-  // if (config.headers.needToken) {
+  if (config.headers.needToken) {
     if (token) {
-      config.headers.authorization = token
+      config.headers['Authorization'] = token
     } else {
-      // throw Error ('请先登录！')
+      throw Error ('请先登录！')
     }
-  // }
+  }
   
   return config
 })
@@ -76,6 +77,28 @@ instance.interceptors.response.use(
     // 1）. 统一处理请求异常
     alert('请求出错：'  + error.message)
     // 默认会返回一个成功的promise实例，但没有数据
+
+    if (!error.response) { // 请求没有真正发出去，在请求拦截器报的错
+      alert('请先登录')
+      // 跳转到登录页
+      if (router.currentRoute.path !== '/login') {
+        router.replace('/login')
+      }
+    } else { // 请求发出去后获取错误信息对象
+      if (error.response.status === 401) {
+        alert('token过期，重新登录')
+        // 跳转到登录页
+        // router.currentRoute 当前路由信息对象
+        if (router.currentRoute.path !== '/login') {
+          router.replace('/login')
+        }
+      } else if (error.response.status === 404) {
+        alert('请求资源未找到')
+      } else {
+        alert('请求错误')
+      }
+    }
+
     // 手动返回一个状态为初始化的promise
     return new Promise(() => {})   //  返回一个pending状态
   }

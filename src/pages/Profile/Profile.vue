@@ -1,18 +1,18 @@
 <template>
   <section class="profile">
     <Header title="个 人"/>
-    <section class="profile-number" @click="$router.push('login')">
+    <section class="profile-number" @click="toLogin">
       <a href="javascript:" class="profile-link">
         <div class="profile_image">
           <i class="iconfont icon-wodedangxuan"></i>
         </div>
         <div class="user-info">
-          <p class="user-info-top">登录/注册</p>
-          <p>
+          <p class="user-info-top" v-if="!user.phone">{{user.name?user.name:'登录/注册'}}</p>
+          <p v-if="!user.name">
             <span class="user-icon">
               <i class="iconfont icon-aui-icon-mobile icon-mobile"></i>
             </span>
-            <span class="icon-mobile-number">暂无绑定手机号</span>
+            <span class="icon-mobile-number">{{user.phone?user.phone:'暂无绑定手机号'}}</span>
           </p>
         </div>
         <span class="arrow">
@@ -88,11 +88,44 @@
         </div>
       </a>
     </section>
+    <section class="profile_my_order border-1px">
+      <!-- <button @click="logout">退出登录</button> -->
+      <mt-button @click="logout" style="width:100%" type="danger">退出登录</mt-button>
+    </section>
   </section>
 </template>
 
 <script type="text/ecmascript-6">
+  
+  import { mapState } from 'vuex'
+  import { MessageBox } from 'mint-ui'
   export default {
+    methods: {
+      toLogin () {
+        // 判断用户是否登录
+        // !!!this.user._id && this.$router.push('/login') // && 前面为false，就不进行后面的
+        !!this.user._id || this.$router.replace('/login') // && 前面为true，就不进行后面的
+      },
+
+      logout () {
+        // if (confirm('确认退出吗？')) {
+        //   this.$store.commit(LOGOUT)
+        // }
+        MessageBox.confirm('确定执行此操作?')
+          .then(
+            actionAgree => this.$store.dispatch('logout'),
+            actionReject => console.log('取消退出')
+          )
+      }
+    },
+
+    // 将user映射到profile
+    computed: {
+      // ...mapState(['user'])
+      ...mapState({
+        user: state => state.user
+      })
+    }
   }
 </script>
 
@@ -100,6 +133,7 @@
   @import "../../common/stylus/mixins.styl"
   .profile //我的
     width 100%
+    overflow hidden
     .profile-number
       margin-top 45.5px
       .profile-link

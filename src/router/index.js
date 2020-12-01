@@ -14,4 +14,3 @@
    mode: 'history', // 去掉路径前面的#
    routes
  })
- 

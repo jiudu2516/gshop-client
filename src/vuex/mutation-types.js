@@ -6,3 +6,4 @@ export const RECEIVE_CATEGORYS = 'receive_categorys'  // 接收分类数组
 export const RECEIVE_SHOPS = 'receive_shops'  // 接收商家数组
 export const RECEIVE_USER = 'receive_user'  // 用户信息
 export const RECEIVE_TOKEN = 'receive_token'  // token
+export const LOGOUT = 'logout'  // 退出登录

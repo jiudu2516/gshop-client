@@ -7,7 +7,7 @@
 
 <script type="text/ecmascript-6">
   import FooterGuide from './components/FooterGuide/FooterGuide'
-  import {reqAddress} from './api'
+  // import {reqAddress,reqAutoLogin} from './api'
   export default {
      
     async mounted () {
@@ -15,6 +15,8 @@
       // console.log('result', result)
       // 通知action异步获取address并保存到state状态
       this.$store.dispatch('getAddress')
+      this.$store.dispatch('autoLogin')
+
     },
 
     components: {
