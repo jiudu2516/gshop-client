@@ -1,0 +1,85 @@
+使用脚手架创建项目：vue-cli3
+安装所有依赖/指定依赖
+
+开发环境运行：不生成本地打包文件
+生产环境运行：生成本地打包文件与运行
+
+在做轮播的时候如果有两个轮播是，可以加上唯一标识 ref=‘sc1’、 ref=‘sc2’
+class='swiper-container'不能更改
+new Swiper（'.swiper-container', {  }）==> new Swiper（this.$refs.sc1,{  }）
+
+轮播使用swiper必须列表数据显示之后创建swiper对象轮播才正常 
+
+
+
+在自适应布局的时候， .link_to_food 
+                                  width  25%     每一项宽度为25%，
+.swiper-slide
+      display  flex
+      flex-wrap  wrap    主要是这个起作用
+
+
+
+ajax封装
+1）ajax.js   axios二次封装
+       1 、统一处理请求异常：响应拦截器的失败的回调中返回一个pending状态的promise  new Promise(() => { })
+       2 、异步请求成功的数据不是response，而是response.data: 响应拦截器的成功回调返回response.data
+       3 、对请求体参数进行urlencode处理，而不使用默认的json方式（后台接口不支持）：请求拦截器中将data对象转换为urlencode字符串
+       4 、指定请求超时的时间和路径前缀：创建实例时指定配置
+
+2）封装接口请求函数  index.js
+       根据接口文档定义
+
+3)  解决ajax的跨域问题
+        配置代理：vue.config.js  ==> devServer.proxy
+                       devServer: {
+                             proxy: {
+                                 // 处理以/api开头路径的请求
+                                 // '/api': 'http://localhost:4000'   // http://localhost:4000/api/search/users
+                                 '/api': {
+                                             target: 'http://localhost:4000', // 转发的目标地址
+                                             pathRewrite: {
+                                                     '^/api': '' // 转发请求时去除路径前面的/api
+                                             },
+                                             changeOrigin: true, // 支持跨域, 如果协议/主机也不相同, 必须加上
+                                  },
+ 
+                             }
+                        }
+        代理服务器：webpack-dev-server  ==>  http-prosy-middleware
+         作用：针对前台虚拟路径的特定请求做转发请求操作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

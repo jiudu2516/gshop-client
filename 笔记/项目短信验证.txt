@@ -1,0 +1,14 @@
+
+Sms   短信
+mms  彩信
+
+在获取短信验证的时候要到容联云通讯去将
+   ACCOUNT SID：   8a216da875da6cfc0175de9d041c0176
+        (主账户ID)                      
+
+   Rest URL(生产)：   https://app.cloopen.com:8883
+
+   AppID(默认)：      8a216da875da6cfc0175de9d0517017c
+
+复制到服务器代码端的util中的将这三个改为自己的
+

@@ -47,7 +47,8 @@ instance.interceptors.request.use((config) => {
   // 判断当前的请求是否需要携带token  用户名密码首次登录时
   if (config.headers.needToken) {
     if (token) {
-      config.headers['Authorization'] = token
+      config.headers.authorization = token
+      // config.headers['Authorization'] = token
     } else {
       throw Error ('请先登录！')
     }

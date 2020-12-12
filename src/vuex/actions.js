@@ -58,7 +58,7 @@ export default {
   
   // 4 保存用户信息的异步action
   saveUser ({commit}, user) {
-    console.log(user)
+    // console.log(user)
     const token = user.token
     // 将token存入本地localStorage  (七天内免登录)
     localStorage.setItem('token_key', token)
@@ -71,7 +71,7 @@ export default {
 
   // 5 自动登录用户
   async autoLogin ({commit, state}) {
-    console.log(state)
+    // console.log(state)
     if (state.token && !state.user._id) { // 有token没有user._id
       // 发送自动请求
       const result = await reqAutoLogin()

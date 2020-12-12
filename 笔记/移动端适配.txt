@@ -1,0 +1,97 @@
+设备独立像素   可以转换成css像素  
+物理像素   就是屏幕分辨率
+屏幕分辨率 = 物理像素
+dpr = 物理像素 / 设备独立像素
+
+win+R  -> cmd     输入命令cd...   cd后输入要切换到的目录
+
+生产环境运行打包
+
+开发环境运行打包
+
+一般请求和ajax请求的区别
+
+vuex：多组件共享管理数据，从后台获取的管理数据
+
+vue-cli创建的项目中，如果vue组件使用template，需要在vue.config.js中   runtimeCompiler：true   默认为false  
+ runtimeCompiler  是否使用包含运行时编译器的 Vue 构建版本
+
+移动端适配
+    先下载依赖包 yarn add lib-flexible postcss-px2rem -D
+    再在vue.config.js中配置   
+        const px2rem = require('postcss-px2rem')
+
+        module.exports = {
+            runtimeCompiler: true,
+            // lintOnSave: false, // 关闭EsLint的规则
+            css: { // 添加postcss配置
+                 loaderOptions: {
+                      postcss: {
+                           plugins: [
+                                // 配置postcss-px2rem
+                                px2rem({
+                                     remUnit: 37.5   // 设计稿等分后的rem值   375/10
+                                 })
+                            ]
+                      }
+                 }
+             },
+        }
+
+
+引入文件@简写写在vue.config.js中
+configureWebpack: { // 内部写webpack原生配置
+    resolve: {
+      extensions: ['.js', '.vue', '.json'], // 可以省略的后缀名
+      alias: { // 路径别名(简写方式)
+        // 'vue$': 'vue/dist/vue.esm.js',  // 表示精准匹配   带vue编译器
+        '@': path.resolve(__dirname, 'src'),
+        '@components': path.resolve(__dirname, 'src/components'),
+      }
+    }
+  },
+
+
+跨域问题
+  devServer: {
+    proxy: {
+      // 处理以/api开头路径的请求
+      // '/api': 'http://localhost:4000'   // http://localhost:4000/api/search/users
+      '/api': {
+        target: 'http://localhost:4000', // 转发的目标地址
+        pathRewrite: {
+          '^/api' : ''  // 转发请求时去除路径前面的/api
+        },
+      },
+
+      '/gh': {
+        target: 'https://api.github.com', // 转发的目标地址
+        pathRewrite: {
+          '^/gh' : ''  // 转发请求时去除路径前面的/api
+        },
+        changeOrigin: true, // 支持跨域, 如果协议/主机也不相同, 必须加上
+      }
+    }
+  }
+
+
+vue-router中，有$router和$route  一般$router适用于跳转的时候人， 
+如 ：this.$router.replace(path)    path为要跳转的页面路径  push
+$route.path === path  表示当前选中的路径
+
+git管理项目：
+    现在github创建仓库
+     git init
+     git add .
+     git commit -m "提交内容"
+     git remote add origin git@github.com:jiudu2516/gshop-client.git 
+     git push origin master  推向远程仓库
+     git pull origin master  从远程仓库拉下来
+     git checkout -b my   创建my分支
+     git merge  my   合并my分支
+ 
+  克隆项目
+     git clone 仓库地址（git@github.com:jiudu2516/gshop-client.git）
+     cd 项目文件夹（gshop-client）    进入项目
+     git branch    查看分支
+     git checkout -b my origin/my   根据远程创建my分支

@@ -10,9 +10,14 @@ import mutations from './mutations'
 import actions from './actions'
 import getters from './getters'
 
+import shop from './modules/shop'
+
 Vue.use(Vuex) // 声明使用Vuex
 
 export default new Vuex.Store({
+  modules: {
+    shop
+  },
   state,
   mutations,
   actions,

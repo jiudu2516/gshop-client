@@ -1,0 +1,8 @@
+在mounted中分发异步action，将数据从后台请求到vuex中
+this.$store.dispatch('getCategorys')
+this.$store.dispatch('getShops')
+
+然后再在computed属性中去映射，在要映射的组件先引入如： import {mapState} from‘vuex’   
+computed：{
+       ...mapState（['address', 'categorys', 'shops']）
+}

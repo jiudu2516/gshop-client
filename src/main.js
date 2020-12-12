@@ -2,6 +2,7 @@ import Vue from 'vue'
 import 'lib-flexible'
 import './veeValidate'
 import {Button} from 'mint-ui'
+import './mock/mockServer'
 
 import * as API from './api'
 

@@ -1,0 +1,154 @@
+数据库：DataBase   按照数据结构来组织、存储和管理数据的仓库     
+             存储数据的仓库  是数据持久化的最佳选择 
+
+数据结构： 
+       简单的：对象（ { } ）、数组（ [ ] ）
+       复杂的：集合结构（相当于对象）、线性结构（相当于数组）、树形结构（dom树）、图形结构
+
+数据库分类：
+         关系型数据库（RDBS）   mySQL（轻量、免费）、Oracle（稳定、收费高、庞大）、DB2、SQL server（微软数据库）
+                  关系型数据库特点：都是表，关系紧密
+                         Excel文件    -----      数据库
+                         sheet页签   -----      表
+                         列        头    -----     字段  -------  唯一标识， 不允许修改（主键）
+                         一        行    ------    一条数据
+
+                   关系型数据库优点：、
+                           1、易于维护   都是使用表结构，格式一致
+                           2、使用方便：SQL（结构化查询语言）通用，可用于复杂查询
+                           3、高级查询：可用于一个表及多个表之间非常复杂的查询
+                           4、事务（不可分割性）
+
+                    关系型数据库的缺点：
+                            1、读写性能差，尤其是海量数据的高效率读写
+                            2、有固定的表结构，字段不可随意更改，灵活度稍欠
+                            3、高并发读写需求，传统关系型数据库来说，硬盘I/O是一个很大的瓶颈
+
+         非关系型数据库（NoSQL）    MongoDB、Redis
+                    非关系型数据库特点：关系不紧密，有文档、由键值对
+                                   数据结构是：大对象里套小对象
+                            Excel文件    -----      数据库
+                            sheet页签   -----      集合
+                            列        头    -----     字段  
+                            一        行    -----     一条文档
+
+
+                    非关系型数据库的优点：
+                               1、格式灵活：存储数据的格式可以是key, value形式  
+                               2、速度快：nosql 可以内存作为载体，关系型数据库只能使用硬盘
+                               3、安装与配置简单：nosql 数据库部署简单
+                     
+                    非关系型数据库的缺点：
+                                1、不支持sql，学习和使用成本较高
+                                2、不支持事务    （ 事务：原子性、不可分割性 ）
+                                3、复杂查询时语句过于繁琐
+
+数据库的增删改查（CRUD）
+     新增数据（Create）
+     修改数据（Update）
+     删除数据（Delete）
+     查询数据（Reda）
+
+
+
+2.1 MongoDB简介
+MongoDB是为快速开发互联网Web应用而设计的数据库系统。
+MongoDB的设计目标是极简、灵活、作为Web应用栈的一部分。
+MongoDB的数据模型是面向文档的，所谓文档是一种类似于JSON的结构，简单理解MongoDB这个数据库中存的是各种各样的JSON。（BSON）
+
+2.2安装MongoDB
+
+2.2.1安装步骤
+   一直选择默认的
+
+2.2.2启动MongoDB服务
+     1)添加环境变量，将MongoDB的bin目录添加到path下
+              对于默认安装的   C盘 -->  Program Files  -->  MongoDB  -->   Server  -->  3.2  -->  bin   复制路径  
+                                              -->   此电脑上右键  -->  属性   -->  高级设置  -->  环境变量  -->  将复制的路径添加上
+
+      2)在c盘根目录创建如下文件夹  C:\data\db
+
+      3)打开命令行窗口输入mongod启动数据库服务器
+
+      4)打开一个新的命令行窗口输入mongo启动数据库的客户端
+
+2.2.3 MongoDB服务器
+      1)服务器负责在计算机创建数据库，使用数据库需要先启动服务器
+
+      2)MongoDB的默认端口号 27017
+              a.可以通过 --port 来指定端口号
+              b.端口号尽量使用四位以上，不要超过最大端口号65535
+              c.不能使用其他服务占用的端口号
+
+3)MongoDB数据库默认会存放在C盘根目录下的data/db
+        a.可以通过 --dbpath 指令来指定数据库的目录
+       结合使用：
+                   mongod --dbpath C:\Users\web\Desktop\database --port 12345
+       注意：启动服务的命令行窗口不能关闭！
+
+2.2.4 MongoDB客户端
+          1)我们通过客户端来管理数据库
+           2)使用mongo来启动客户端
+
+2.3将MongoDB设置为windows系统服务
+         1)在c盘根目录创建如下文件夹
+              C:\data\log
+              C:\data\db
+
+         2)在MongoDB的安装目录添加一个配置文件
+                   目录：C:\Program Files\MongoDB\Server\3.2
+                     文件：mongod.cfg
+
+         3)以管理员身份打开命令行窗口	cmd-->右键-->以管理员身份运行
+
+         4)执行以下指令  默认安装的C盘
+                     sc.exe create MongoDB binPath= "\"C:\Program Files\MongoDB\Server\3.2\bin\mongod.exe\" --service --config=\"C:\Program Files\MongoDB\Server\3.2\mongod.cfg\"" DisplayName= "MongoDB" start= "auto"
+               
+             自己选择的安装路径更改：
+                     sc.exe create MongoDB binPath= "\"E:\MongoDB\Server\3.2\bin\mongod.exe\" --service --config=\"E:\MongoDB\Server\3.2\mongod.cfg\"" DisplayName= "MongoDB" start= "auto"
+
+          5)打开系统服务器窗口（任务管理器  ctrl+shift+esc  alt+ctrl+del）--> 服务  -->  打开服务（最底下）--> mongoDB -->  右键启动，启动名为MongoDB的服务	
+
+          6)如果无法启动服务，在管理员的命令行窗口中输入如下指令
+                       sc delete MongoDB
+
+          7)重复步骤1
+
+
+原型对象只有一个
+prototype：显示原型属性  通过  函数.prototype  指向原型对象
+__proto__：隐式原型属性   每一个实例对象都有一个  通过函数实例的隐式原型属性指向原型对象
+
+
+MongoDB基本命令：
+       1.  db：查看当前在操作哪一个数据库
+       2.  show dbs：查看数据库列表（一共有几个数据库，备注：如果数据库为空，不出现在列表中）
+       3.  use test：切换到test数据库，如果不存在，则创建一个test库
+       4.  db.students.insert()：当前数据库的students集合中插入一个文档
+       5.  show collections：展示当前数据库中所有的集合
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

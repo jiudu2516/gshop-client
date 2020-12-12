@@ -1,0 +1,26 @@
+{
+  "provices": [
+    {
+      "name": "河北省",
+      "id": 2
+    }
+  ],
+  "cities": [
+    {
+      "name": "邯郸市",
+      "parentId": 2,
+      "id": 234
+    },
+    {
+      "name": "石家庄市",
+      "parentId": 2,
+      "id": 235
+    }
+  ],
+  "countries": [
+    {
+      "name": "邯郸市下面的区县",
+      "parentId": 234
+    }
+  ]
+}

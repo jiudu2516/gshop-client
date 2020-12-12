@@ -132,7 +132,7 @@
       </div>
       <div class="shop_container">
         <ul class="shop_list" v-if="shops.length>0">
-          <li class="shop_li border-1px" v-for="shop in shops" :key="shop.id">
+          <li @click="toShop" class="shop_li border-1px" v-for="shop in shops" :key="shop.id">
             <a>
               <div class="shop_left">
                 <img class="shop_img" :src="'https://fuss10.elemecdn.com' + shop.image_path">
@@ -339,7 +339,6 @@
   import {mapState} from 'vuex'
        
   export default {
-
     
     computed: {
       // 将状态数据映射
@@ -379,6 +378,12 @@
       categorysArr2 () {
         // return _.chunk(this.categorys, 8)
         return chunk(this.categorys, 8)
+      }
+    },
+
+    methods: {
+      toShop () {
+        this.$router.push('/shop')
       }
     },
 

@@ -41,3 +41,11 @@ export const reqAutoLogin = () => ajax.get('/auto_login',
     needToken: true
   }
 })
+
+// 测试mock接口
+export const test = () => ajax('/test')
+
+// 商家数据信息
+export const reqShopDatas = () => ajax({
+  url: '/shopDatas'
+})

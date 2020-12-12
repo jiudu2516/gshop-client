@@ -16,7 +16,8 @@
         required: true,  // 使用required选项来声明这个参数是否必须传入
         type: Number, // 可以使用type来声明这个参数可以接受的数据的类型，
         default: 5  // 使用default选项来指定当父组件未传入参数时props变量的默认值：
-      }
+      },
+      size: Number
     },
 
     computed: {

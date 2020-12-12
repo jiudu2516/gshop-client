@@ -1,0 +1,51 @@
+<div class="star" :class="'star-' + size">
+      <span class="star-item" :class="item" v-for="(item, index) in starClasses" :key="index"></span>
+</div>
+
+<script type="text/ecmascript-6">
+  export default {
+    name: 'Stars',
+    props: {
+      score: {
+        required: true,  // 使用required选项来声明这个参数是否必须传入
+        type: Number, // 可以使用type来声明这个参数可以接受的数据的类型，
+        default: 5  // 使用default选项来指定当父组件未传入参数时props变量的默认值：
+      }
+    },
+
+    computed: {
+      starClasses () {
+        let starArr = []
+        let {score} = this
+
+        // 1.全星 0-5
+        const onClasses = Math.floor(score)
+        for (let i = 0; i < onClasses; i++) {
+          starArr.push('on')
+        }
+
+        // 2.半星 1 || 0  看评分是否有小数点
+        (score - onClasses) > 0 && starArr.push('half')
+
+        // 3.灰星 0-5
+        while (starArr.length < 5) {
+          starArr.push('off')
+        }
+
+        return starArr
+      }
+    }
+
+  }
+</script>
+
+
+
+
+需要将Stars组件进行全局注册，在main.js中
+
+import Stars from '@/components/Stars/Stars.vue'
+
+Vue.component('Stars', Stars)
+
+并且在需要现实的组件中也要引入，在DOM结构上<Stars :score="shop.rating" :size="24"/>

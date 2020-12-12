@@ -27,5 +27,5 @@
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  
+  @import "../public/css/reset.css"
 </style>

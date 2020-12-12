@@ -1,0 +1,103 @@
+轮播   swiper
+   先下载swiper       yarn add swiper@5.0.0
+
+   在需要轮播的组件中引入swiper  以及swiper.css
+      import Swiper from 'swiper'
+      import 'swiper/css/swiper.css'
+
+<script type="text/ecmascript-6">
+  import Swiper from 'swiper'
+  import 'swiper/css/swiper.css'
+  // import _ from 'lodash'
+  import chunk from 'lodash/chunk' // 只打包引入的工具函数  ==> 打包文件更小
+  import {mapState} from 'vuex'
+       
+  export default {
+    computed: {
+      // 将状态数据映射
+      ...mapState(['address', 'categorys', 'shops']),
+
+      /* 
+        根据一维数组生成二维数组
+        包含所有分类的二维数组
+        内部小叔的长度最大为8
+      */
+      categorysArr () {
+        const { categorys } = this
+         //  二维数组
+        const bigArr = []
+        let smallArr =[]
+
+         // 遍历总的一维数组
+        categorys.forEach(c => {
+          //  将小数组放入大数组中（只保存一次）
+          if (smallArr.length===0) {
+            bigArr.push(smallArr)
+          }
+
+          // 将c保存小数组
+          smallArr.push(c)
+
+          // 小数组的长度最大是8 ==> 如果小数组满，创建一个新的小数组
+          if (smallArr.length===8) {
+            smallArr = []
+          }
+         })
+
+        //  返回二维数组
+        return bigArr
+      },
+
+      categorysArr2 () {
+        // return _.chunk(this.categorys, 8)
+        return chunk(this.categorys, 8)
+      }
+    },
+
+    mounted () {
+
+      // 分发异步action，将数据从后台请求到vuex中
+      this.$store.dispatch('getCategorys')
+      this.$store.dispatch('getShops')
+
+      // swiper对象必须要在列表数据显示之后创建
+      new Swiper ('.swiper-container', {
+        loop: true, // 循环模式选项
+        
+        // 如果需要分页器
+        pagination: {
+          el: '.swiper-pagination',
+        }
+      }) 
+    }
+  }
+</script>
+
+
+swiper 对象必须要在列表数据显示之后创建,所以写在mounted中
+
+
+    export default {
+         var mySwiper = new Swiper ('.swiper-container', {
+             direction: 'vertical', // 垂直切换选项，默认是水平滑动
+             loop: true, // 循环模式选项
+    
+             // 如果需要分页器
+             pagination: {
+                  el: '.swiper-pagination',
+             },
+    
+              // 如果需要前进后退按钮
+             navigation: {
+                  nextEl: '.swiper-button-next',
+                  prevEl: '.swiper-button-prev',
+              },
+    
+              // 如果需要滚动条
+              scrollbar: {
+                  el: '.swiper-scrollbar',
+               },
+          })        
+    }
+    
+
